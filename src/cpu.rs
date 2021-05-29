@@ -1,4 +1,4 @@
-use crate::{fonts, instr::Instr, opcode::Opcode, cli::Config, Result};
+use crate::{fonts, instr::Instr, opcode::Opcode, config::Config, Result};
 use std::convert::TryInto;
 use std::time::Duration;
 

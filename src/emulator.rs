@@ -1,6 +1,6 @@
 use crate::{
     cpu::{Cpu, NUM_KEYS, SCREEN_HEIGHT, SCREEN_WIDTH},
-    cli::Config,
+    config::Config,
 };
 
 use minifb::{Key, Result, Window, WindowOptions, KeyRepeat};

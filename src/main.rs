@@ -1,13 +1,13 @@
 use crate::{
     emulator::Emulator,
     opcode::Opcode,
-    cli::Config,
+    config::Config,
 };
 
 use clap::Clap;
 
 mod cpu;
-mod cli;
+mod config;
 mod emulator;
 mod fonts;
 mod instr;

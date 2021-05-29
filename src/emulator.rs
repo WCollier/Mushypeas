@@ -1,4 +1,7 @@
-use crate::cpu::{Cpu, NUM_KEYS, SCREEN_HEIGHT, SCREEN_WIDTH};
+use crate::{
+    cpu::{Cpu, NUM_KEYS, SCREEN_HEIGHT, SCREEN_WIDTH},
+    cli::Config,
+};
 
 use minifb::{Key, Result, Window, WindowOptions, KeyRepeat};
 use std::time::{Instant, Duration};
@@ -36,7 +39,7 @@ pub(crate) struct Emulator {
 }
 
 impl Emulator {
-    pub(crate) fn new() -> Self {
+    pub(crate) fn new(config: Config) -> Self {
         let mut window = Window::new(
             "Mushypeas",
             WINDOW_WIDTH,
@@ -48,7 +51,7 @@ impl Emulator {
         window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
 
         Emulator {
-            cpu: Cpu::new(),
+            cpu: Cpu::new(config),
             window,
             screen_buffer: vec![0x0; SCREEN_WIDTH * SCREEN_HEIGHT],
         }

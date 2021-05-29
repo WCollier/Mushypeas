@@ -1,4 +1,4 @@
-use crate::{fonts, instr::Instr, opcode::Opcode, Result};
+use crate::{fonts, instr::Instr, opcode::Opcode, cli::Config, Result};
 use std::convert::TryInto;
 use std::time::Duration;
 
@@ -7,6 +7,8 @@ pub(crate) const SCREEN_WIDTH: usize = 64;
 pub(crate) const SCREEN_HEIGHT: usize = 32;
 
 pub(crate) const NUM_KEYS: usize = 16;
+
+pub(crate) const MAX_INSTRS: usize = MEM_SIZE - INSTR_START;
 
 const MEM_SIZE: usize = 4096;
 
@@ -18,11 +20,12 @@ const REGS: usize = 16;
 
 const STACK_SIZE: usize = 16;
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Clone, Debug)]
 pub(crate) struct Cpu {
     pub(crate) display: [bool; SCREEN_WIDTH * SCREEN_HEIGHT],
     pub(crate) keys: [bool; NUM_KEYS],
     pub(crate) should_rerender: bool,
+    config: Config,
     stack: [usize; STACK_SIZE],
     registers: [u8; REGS],
     memory: [u8; MEM_SIZE],
@@ -35,11 +38,12 @@ pub(crate) struct Cpu {
 }
 
 impl Cpu {
-    pub(crate) fn new() -> Self {
+    pub(crate) fn new(config: Config) -> Self {
         Cpu {
             display: [false; SCREEN_WIDTH * SCREEN_HEIGHT],
             keys: [false; NUM_KEYS],
             should_rerender: false,
+            config,
             stack: [0; STACK_SIZE],
             registers: [0; REGS],
             memory: [0; MEM_SIZE],
@@ -78,8 +82,10 @@ impl Cpu {
         if self.sound_timer > 0 {
             self.sound_timer -= 1;
 
-            // TODO: Add proper beep sound
-            println!("Beep");
+            if !self.config.mute {
+                // TODO: Add proper beep sound
+                println!("Beep");
+            }
         }
 
         match Cpu::decode_instr(self.memory[self.pc], self.memory[self.pc + 1]) {

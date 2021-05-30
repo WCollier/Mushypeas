@@ -24,7 +24,7 @@ enum EmulatorError {
 fn main() -> Result {
     let config = Config::parse();
 
-    let rom = config.load_rom().map_err(|e| EmulatorError::IOError(e))?;
+    let rom = config.load_rom()?;
 
     let mut emu = Emulator::new(config);
 

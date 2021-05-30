@@ -1,10 +1,8 @@
-use crate::{
-    emulator::Emulator,
-    cpu::MAX_INSTRS,
-};
+use crate::{cpu::MAX_INSTRS, EmulatorError};
 
 use std::{fs::File, io::Read};
 use clap::Clap;
+use std::io::Error;
 
 #[derive(Clone, Debug, Clap)]
 #[clap(name = "mushypeas")]
@@ -25,5 +23,11 @@ impl Config {
         f.read(&mut buffer)?;
 
         Ok(buffer)
+    }
+}
+
+impl From<std::io::Error> for EmulatorError {
+    fn from(e: Error) -> Self {
+        EmulatorError::IOError(e)
     }
 }

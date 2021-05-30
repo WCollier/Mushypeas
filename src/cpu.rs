@@ -1,6 +1,5 @@
 use crate::{fonts, instr::Instr, opcode::Opcode, config::Config, Result};
 use std::convert::TryInto;
-use std::time::Duration;
 
 pub(crate) const SCREEN_WIDTH: usize = 64;
 
